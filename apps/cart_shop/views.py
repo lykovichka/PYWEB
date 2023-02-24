@@ -115,16 +115,12 @@ class ViewCartAdd(View):
 class ViewWishList(View):
     """Отображение списка избранного"""
     def get(self, request):
+
         if request.user.is_authenticated:
             wishlist_item = Wishlist.objects.filter(wishlist__user=request.user)
             data = list(wishlist_item)
 
-            for item in data:
-                if item.product.discount is not None:
-                    total_price = item.product.price -(item.product.price * item.product.discount/100)
-
-            context = {'wishlist_item': data,
-                   'price': total_price,
+            context = {'wishlist_item': data
                        }
             return render(request, 'cart_shop/wishlist.html', context)
         else:
